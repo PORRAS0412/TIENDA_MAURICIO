@@ -1,0 +1,93 @@
+<div class="tienda-container">
+  <h1><mat-icon>storefront</mat-icon> Catálogo de Productos</h1>
+
+
+
+  <!-- FORMULARIO DE REGISTRO -->
+  <div *ngIf="mostrarFormulario" class="formulario-container animate">
+    <mat-card class="formulario-card">
+
+      <mat-card-content>
+        <form class="formulario-producto">
+          <div class="form-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input
+                matInput
+                [(ngModel)]="nuevoProducto.nombre"
+                name="nombre"
+                required
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Precio</mat-label>
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="nuevoProducto.precio"
+                name="precio"
+                required
+              />
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Descripción</mat-label>
+            <textarea
+              matInput
+              [(ngModel)]="nuevoProducto.descripcion"
+              name="descripcion"
+              rows="3"
+            ></textarea>
+          </mat-form-field>
+
+          <div class="boton-guardar">
+            <button mat-raised-button color="primary" type="submit">
+              <mat-icon>save</mat-icon>
+              Guardar producto
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- GRID DE PRODUCTOS -->
+  <div class="productos-grid" *ngIf="!cargando && productos.length > 0">
+    <mat-card class="producto-card" *ngFor="let p of productos; let i = index">
+      <div class="img-container">
+        <img
+          [src]="imagenes[i % imagenes.length]"
+          alt="{{ p.nombre }}"
+        />
+      </div>
+
+      <mat-card-content>
+        <h2>{{ p.nombre }}</h2>
+        <p class="descripcion">
+          {{ p.descripcion || 'Descripción breve del producto...' }}
+        </p>
+        <p class="precio">{{ p.precio | currency: 'COP' }}</p>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button mat-raised-button color="primary" (click)="agregarAlCarrito(p)">
+          <mat-icon>add_shopping_cart</mat-icon>
+          Añadir al carrito
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- MENSAJES -->
+  <div class="no-productos" *ngIf="!cargando && !productos.length">
+    <mat-icon>inventory_2</mat-icon>
+    <p>No hay productos disponibles en este momento.</p>
+  </div>
+
+  <div class="cargando" *ngIf="cargando">
+    <mat-icon class="spin">autorenew</mat-icon>
+    <p>Cargando productos...</p>
+  </div>
+</div>
